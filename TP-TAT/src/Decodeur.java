@@ -16,9 +16,9 @@ public class Decodeur {
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		String inputFile = "Tatou.pgm";
+		String inputFile = "tatooed.pgm";
 		String outputPref = "out_";
-		String outfile ="testrage2";
+		String outfile ="";
 		int beginData = 160;
 		
 		Pixmap tatou = new ShortPixmap(inputFile);
