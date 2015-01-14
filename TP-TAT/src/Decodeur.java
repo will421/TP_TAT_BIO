@@ -1,5 +1,7 @@
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -18,7 +20,7 @@ public class Decodeur {
 		// TODO Auto-generated method stub
 		String inputFile = "Tatou.pgm";
 		String outputPref = "out_";
-		String outfile ="testrage2";
+		String outfile ="";
 		int beginData = 160;
 		
 		Pixmap tatou = new ShortPixmap(inputFile);
@@ -53,8 +55,15 @@ public class Decodeur {
 			outfile+=new String(fileName);
 		}
 		
+		DataOutputStream out ;
+		try{
+			out = new DataOutputStream(new FileOutputStream(outputPref+outfile));
+		}
+		catch (FileNotFoundException ex)
+		{
+			out = new DataOutputStream(new FileOutputStream(outputPref+"File_Error.pgm"));
+		}
 		
-		DataOutputStream out = new DataOutputStream(new FileOutputStream(outputPref+outfile));
 		
 		//Saut au flux de donnée (-16 car le lecteur de pgm saute l'entête)
 		buffer.position(beginData-16);
@@ -84,6 +93,7 @@ public class Decodeur {
 			short b = buffer.get();
 			//System.out.println(hex(b));
 			b =(short) (b & 0x3);
+			
 			
 			oct = (short) (oct | b);
 		}
