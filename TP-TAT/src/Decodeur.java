@@ -31,7 +31,7 @@ public class Decodeur {
 		
 		//On lit la taille du fichier
 		int sizeRes = 0;
-		System.out.println(hex(sizeRes));
+		System.out.println("taille:"+hex(sizeRes));
 		for(int i =0;i<4;i++)
 		{
 			sizeRes = sizeRes <<8;
@@ -40,8 +40,8 @@ public class Decodeur {
 			System.out.println("-");
 			sizeRes= sizeRes | oct;
 		}
-		System.out.println(sizeRes);
-		System.out.println(hex(sizeRes));
+		System.out.println("taille:"+sizeRes);
+		System.out.println("taille:"+hex(sizeRes));
 		
 		
 		///On lit le nom du fichier

@@ -14,8 +14,18 @@ public class Encodeur {
 	    return String.format("0x%8s", Integer.toHexString(n)).replace(' ', '0');
 	}
 	
+	public static void testUnitaire()
+	{
+		byte data = (byte) 0x01;
+		byte[] bytes = {15,15,15,15,15,15};
+		writeOne(data, bytes, 1);
+		System.out.println(bytes.toString());
+	}
+	
 	
 	public static void main(String[] args) throws IOException {
+		//testUnitaire();
+		
 		String contentFile = args[0];
 		String tatooFile = args[1];
 		String codedFile ="tatooed.pgm";
@@ -29,16 +39,22 @@ public class Encodeur {
 		
 		
 		// ecriture du nom de fichier
-		for (int i = 0 ; i < tatooBytes.length; i++){
+		for (int i = 0 ; i < 16; i++){
 			
-			writeOne(tatooBytes[i],bytes, 16+i*4);
-			
+			if(i>=tatooBytes.length)
+			{
+				writeOne((byte)0,bytes, 16+i*4);
+			}
+			else
+			{
+				writeOne(tatooBytes[i],bytes, 16+i*4);
+			}
 		}
 		
 
 		//ecriture du reste
 		boolean stop = false;
-		int i =0;
+		int n =0;
 		while(!stop){
 			int r = MyTatoo.read();
 			if(r==-1){
@@ -46,15 +62,20 @@ public class Encodeur {
 			}
 			else{
 				byte data = (byte)r;
-				writeOne(data,bytes,beginData+i*4);
-				
+				writeOne(data,bytes,beginData-16+n*4);
+				n++;
 			}
-			i++;
+			
 		}
+		System.out.println("Ecrit:"+n);
+		
 		
 		//Maintenon à la taille;
-		
-		writeOne((byte)i,bytes,0);
+		for(int i=0;i<4;i++)
+		{
+			writeOne((byte)(n>>8*(3-i)),bytes,0+i*4);
+		}
+
 		
 		Pixmap outputPIX = new BytePixmap(contentFilePIX.width,contentFilePIX.height,bytes);
 		
@@ -67,17 +88,16 @@ public class Encodeur {
 	// writeOne : data -> octet de data que je veux écrire
 	// Bytes possède déjà les données de l'image à tatouté ( image intiali )
 	public static void writeOne(byte data, byte[] bytes, int pos){
-		
-
 		for(int i=0; i < 4; i++ ){
 			
+			byte tmp = (byte) (data >> 2*(3-i)); 
+			byte dataLast = (byte) (tmp & 0x3);
+			
 			byte orig = bytes[pos+i];
-			byte dataLast = (byte) (data & 0x3);
 			orig  = (byte) ( orig & ~0x3);
-			
+			 
 			bytes[pos+i] =  (byte) (orig |dataLast);
-			
-			data = (byte) (data >> 2); 
+			//System.out.println(orig);
 		}
 		
 		
