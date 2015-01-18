@@ -24,8 +24,8 @@ public class Encodeur {
 	
 	
 	public static void main(String[] args) throws IOException {
-		//testUnitaire();
 		
+		//On recupère les paramètres
 		String contentFile = args[0];
 		String tatooFile = args[1];
 		String codedFile ="tatooed.pgm";
@@ -38,7 +38,7 @@ public class Encodeur {
 		byte[] tatooBytes = tatooFile.getBytes();
 		
 		
-		// ecriture du nom de fichier
+		//Ecriture du nom de fichier
 		for (int i = 0 ; i < 16; i++){
 			
 			if(i>=tatooBytes.length)
@@ -52,7 +52,7 @@ public class Encodeur {
 		}
 		
 
-		//ecriture du reste
+		//ecriture du reste du flux
 		boolean stop = false;
 		int n =0;
 		while(!stop){
@@ -70,7 +70,7 @@ public class Encodeur {
 		System.out.println("Ecrit:"+n);
 		
 		
-		//Maintenon à la taille;
+		// Nous avons pu recupere la taille grace à la variable N, nous l'inscrivons maitnenant dans notr fichier
 		for(int i=0;i<4;i++)
 		{
 			writeOne((byte)(n>>8*(3-i)),bytes,0+i*4);
@@ -86,7 +86,7 @@ public class Encodeur {
 	
 	
 	// writeOne : data -> octet de data que je veux écrire
-	// Bytes possède déjà les données de l'image à tatouté ( image intiali )
+	// Bytes possède déjà les données de l'image à tatouté ( image intialie )
 	public static void writeOne(byte data, byte[] bytes, int pos){
 		for(int i=0; i < 4; i++ ){
 			
